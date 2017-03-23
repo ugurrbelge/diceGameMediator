@@ -1,37 +1,77 @@
-/**
- * Created by ugurbelge on 3/23/17.
- */
+import java.io.Console;
+import java.util.*;
+
 public class DiceGame {
 
-    private DiceGame game = null;
+    private static Scanner reader = new Scanner(System.in);
+    private static DiceGame game = null;
+    private static int numberOfPlayer;
+    private static HashMap<String, String> players = new HashMap<String, String>();
 
-    public static void main(String[] args){
 
-        System.out.println( "\n!!!! Welcome to the Sticks Game !!!!" );
+    public static void main(String[] args) {
 
+        System.out.println("\n!!!! Welcome to the Sticks Game !!!!");
 
         try {
-            Referee referee = new Referee();
-            System.out.println();
+            game = new DiceGame();
+            game.start();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void start() {
+        try {
+            Referee referee = new Referee();
+            getPlayers();
+            System.out.println();
+            players.forEach((name, type) -> System.out.println("Player name : " + name + " / Type :" + type));
+            referee.init(players);
+            referee.conductGame();
+            referee.announceWinner();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
+    }
 
+    private static void getPlayers() {
+
+        try {
+            System.out.println("How many players we have(2-4) : ");
+            numberOfPlayer = reader.nextInt();
+            if (2 <= numberOfPlayer && numberOfPlayer <= 4) {
+                System.out.println("C : Computer player /  H : Human player");
+                String playerType = "C";
+                String playerName = "player";
+                int index = 0;
+
+                for (index = 0; index < numberOfPlayer; index++) {
+                    System.out.println("Player " + (index + 1) + " type(H/C) : ");
+                    playerType = reader.next();
+                    if (!(playerType.equals("H")) || !(playerType.equals("C"))) {
+                        playerType = "C";   //if not valid input get type as computer
+                    }
+
+                    System.out.println("Player " + (index + 1) + " name : ");
+                    playerName = reader.next();
+                    players.put(playerName, playerType);
+                }
+            } else {
+                System.out.println("Invalid input !!!");
+                getPlayers();
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input !!!");
+            reader.hasNextInt(); // clears the buffer
+        }
 
     }
 
-
-    private void play() throws SaveGameException
-    {
-        System.out.println();
-        System.out.println( players[ 0 ] + " VS. " );
-        System.out.println( players[ 1 ] + " !!!! " );
-
-        referee.conductGame();
-        referee.announceWinner();
-
-        System.out.println( "" );
-        Console.readLine( "Press << \"enter\" >> to exit: " );
-    }
 }
