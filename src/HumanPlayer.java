@@ -8,7 +8,9 @@ public class HumanPlayer implements Player {
     private Scanner reader = new Scanner(System.in);
     private String name;
     private ArrayList<Dice> playerDices = new ArrayList<>();
-    private ArrayList<Integer> playerColumnsNumers ;
+    private ArrayList<Integer> playerColumnsNumbers;
+
+
 
 
     public HumanPlayer(String name){
@@ -21,6 +23,7 @@ public class HumanPlayer implements Player {
             System.out.println(e);
         }
     }
+
     private void createDices(){
 
         int index = 0;
@@ -34,92 +37,143 @@ public class HumanPlayer implements Player {
     }
 
     public void rollDice(){
-
         for(Dice dice : playerDices){
             dice.setRandomInt();
         }
     }
 
-    public ArrayList<Integer> getPlayerColumnsNumers(){
-        return this.playerColumnsNumers;
+    public ArrayList<Integer> getPlayerColumnsNumbers(){
+        return this.playerColumnsNumbers;
     }
 
-    private void setPlayerColumnsNumers(ArrayList<Integer> selectedColumns){
-        this.playerColumnsNumers = selectedColumns ;
+    private void setPlayerColumnsNumbers(ArrayList<Integer> selectedColumns){
+        this.playerColumnsNumbers = selectedColumns ;
+    }
+
+    private void getPlayerColumnsNumbers(ArrayList<Integer> selectedColumns){
+        this.playerColumnsNumbers = selectedColumns ;
+    }
+
+    private void setPlayerColumnsNumbers(Integer firstColumn,Integer secondColumn) {
+        if(playerColumnsNumbers.size() > 0) {
+            playerColumnsNumbers.set(0,firstColumn);
+            playerColumnsNumbers.set(1,secondColumn);
+        }
+        else {
+            playerColumnsNumbers.add(firstColumn);
+            playerColumnsNumbers.add(secondColumn);
+        }
     }
 
     private void setName(String name) {
         this.name = name;
     }
 
-    public ArrayList<Integer> selectPlayerColumns(){
+    public ArrayList<Integer> selectPlayerColumns() {
+        Integer[] firstColumnDiceNumber = new Integer[2];
+        Integer[] secondColumnDiceNumber = new Integer[2];
 
-        String[] selectedGroupOne;
-        String[] selectedGroupTwo;
-        ArrayList<Integer> validColumn = new ArrayList<>();
-        String grupOne;
-        String grupTwo;
-
-        System.out.println("This raund for select your column number.");
+        System.out.println("This round for select your column number.");
         System.out.println("Your dices are :");
-        playerDices.forEach((dice) -> System.out.println(dice.getRandomInt()));
+        playerDices.forEach((dice) -> System.out.print(dice.getRandomInt() + " "));
 
-        System.out.println("Take grups of two and write them such that 2,3 push the enter button and repeat");
-        System.out.println("Select your first column :");
-        grupOne = reader.next();
-        System.out.println("Select your second column :");
-        grupTwo = reader.next();
+        System.out.println("Take group of two dice and write them such that 1 push the enter 2 push and repeat");
 
-        selectedGroupOne = grupOne.split(",");
-        selectedGroupTwo = grupTwo.split(",");
+        System.out.println("Select your first Column's 1. Dice :");
+        firstColumnDiceNumber[0] = reader.nextInt();
+        while(firstColumnDiceNumber[0] > 4 ) {
+            System.out.println("Your decision invalid please select first column's first dice");
+            firstColumnDiceNumber[0] = reader.nextInt();
+        }
 
-        int column1 = Integer.parseInt(selectedGroupOne[0])*Integer.parseInt(selectedGroupOne[1]);
-        int column2 = Integer.parseInt(selectedGroupTwo[0])*Integer.parseInt(selectedGroupTwo[1]);
+        System.out.println("Select your first Column's 2. Dice :");
+        firstColumnDiceNumber[1] = reader.nextInt();
+        while(firstColumnDiceNumber[1] > 4 || firstColumnDiceNumber[0] == firstColumnDiceNumber[1]) {
+            System.out.println("Your desicion is invalid please select first column's second dice");
+            firstColumnDiceNumber[1] = reader.nextInt();
+        }
 
-        playerColumnsNumers.add(column1,column2);
-        return playerColumnsNumers;
+        System.out.println("Select your second Column's 1. Dice :");
+        secondColumnDiceNumber[0] = reader.nextInt();
+        while(secondColumnDiceNumber[0] > 4 || firstColumnDiceNumber[0] == secondColumnDiceNumber[0] || firstColumnDiceNumber[1] == secondColumnDiceNumber[0]) {
+            System.out.println("Your desicion is invalid please select first column's first dice");
+            secondColumnDiceNumber[0] = reader.nextInt();
+        }
+        System.out.println("Select your second Column's 2. Dice :");
+        secondColumnDiceNumber[1] = reader.nextInt();
+        while(secondColumnDiceNumber[1] > 4 || firstColumnDiceNumber[0] == secondColumnDiceNumber[1] || firstColumnDiceNumber[1] == secondColumnDiceNumber[1] || secondColumnDiceNumber[0] == secondColumnDiceNumber[1]) {
+            System.out.println("Your desicion is invalid please select first column's second dice");
+            secondColumnDiceNumber[0] = reader.nextInt();
+        }
 
+        Integer column1 = playerDices.get(firstColumnDiceNumber[0]).getRandomInt() * playerDices.get(firstColumnDiceNumber[1]).getRandomInt();
+        Integer column2 = playerDices.get(secondColumnDiceNumber[0]).getRandomInt() * playerDices.get(secondColumnDiceNumber[1]).getRandomInt();
 
+        setPlayerColumnsNumbers(column1,column2);
+
+        return playerColumnsNumbers;
     }
 
     @Override
     public Move makeMove() {
-        String[] selectedGroupOne;
-        String[] selectedGroupTwo;
-        ArrayList<Integer> validColumn = new ArrayList<>();
-        String grupOne;
-        String grupTwo;
+
+        Integer[] firstColumnDiceNumber = new Integer[2];
+        Integer[] secondColumnDiceNumber = new Integer[2];
+
         rollDice();
+
         System.out.println("Your dices are :");
-        playerDices.forEach((dice) -> System.out.println(dice.getRandomInt()));
-        System.out.println("Your columns are " + playerColumnsNumers.get(0) +" and " + playerColumnsNumers.get(1)+" .");
-        System.out.println("Take grups of two and write them such that 2,3 push the enter button and repeat");
-        System.out.println("Select your first group :");
-        grupOne = reader.next();
-        System.out.println("Select your second group :");
-        grupTwo = reader.next();
+        playerDices.forEach((dice) -> System.out.print(dice.getRandomInt() + " "));
 
-        selectedGroupOne = grupOne.split(",");
-        selectedGroupTwo = grupTwo.split(",");
+        System.out.println("Take group of two dice and write them such that 1 push the enter 2 push and repeat");
 
-        int column1 = Integer.parseInt(selectedGroupOne[0])*Integer.parseInt(selectedGroupOne[1]);
-        int column2 = Integer.parseInt(selectedGroupTwo[0])*Integer.parseInt(selectedGroupTwo[1]);
+        System.out.println("Select your first Group's 1. Dice :");
+        firstColumnDiceNumber[0] = reader.nextInt();
+        while(firstColumnDiceNumber[0] > 4 ) {
+            System.out.println("Your decision invalid please select first group's first dice");
+            firstColumnDiceNumber[0] = reader.nextInt();
+        }
 
-        if(playerColumnsNumers.contains(column1)){
-            if(playerColumnsNumers.contains(column2) && column1 != column2){
+        System.out.println("Select your first Group's 2. Dice :");
+        firstColumnDiceNumber[1] = reader.nextInt();
+        while(firstColumnDiceNumber[1] > 4 || firstColumnDiceNumber[0] == firstColumnDiceNumber[1]) {
+            System.out.println("Your desicion is invalid please select first group's second dice");
+            firstColumnDiceNumber[1] = reader.nextInt();
+        }
 
-                validColumn.add(column1,column2);
-                return (new Move(validColumn));
+        System.out.println("Select your second Group's 1. Dice :");
+        secondColumnDiceNumber[0] = reader.nextInt();
+        while(secondColumnDiceNumber[0] > 4 || firstColumnDiceNumber[0] == secondColumnDiceNumber[0] || firstColumnDiceNumber[1] == secondColumnDiceNumber[0]) {
+            System.out.println("Your desicion is invalid please select first group's first dice");
+            secondColumnDiceNumber[0] = reader.nextInt();
+        }
+        System.out.println("Select your second Group's 2. Dice :");
+        secondColumnDiceNumber[1] = reader.nextInt();
+        while(secondColumnDiceNumber[1] > 4 || firstColumnDiceNumber[0] == secondColumnDiceNumber[1] || firstColumnDiceNumber[1] == secondColumnDiceNumber[1] || secondColumnDiceNumber[0] == secondColumnDiceNumber[1]) {
+            System.out.println("Your desicion is invalid please select first group's second dice");
+            secondColumnDiceNumber[0] = reader.nextInt();
+        }
 
+        Integer column1 = playerDices.get(firstColumnDiceNumber[0]).getRandomInt() * playerDices.get(firstColumnDiceNumber[1]).getRandomInt();
+        Integer column2 = playerDices.get(secondColumnDiceNumber[0]).getRandomInt() * playerDices.get(secondColumnDiceNumber[1]).getRandomInt();
+
+        if(playerColumnsNumbers.contains(column1)){
+            if(playerColumnsNumbers.contains(column2) && column1 != column2){
+                return (new Move(column1,column2));
             }else {
-                validColumn.add(column1);
-                return (new Move(validColumn));
+                return (new Move(column1));
             }
-
-        }else {
-            return (new Move(validColumn));
+        }
+        else if (playerColumnsNumbers.contains(column2)) {
+            return new Move(column2);
+        }
+        else {
+            return (new Move(0));
         }
     }
 
+    public String toString() {
+        return name;
+    }
 
 }

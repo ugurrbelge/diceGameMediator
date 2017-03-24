@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.IntSummaryStatistics;
 import java.util.List;
 
 
@@ -10,50 +9,53 @@ public class Referee {
     private ArrayList<Player> players;
     private Player currentPlayer ;
     private int currentPlayerIndex = 0;
+    private int roundNumber = 5;
 
     public void conductGame(){
 
         board.display();
         Move move = null;
 
+        //all player select columns
         for (Player player : players){
+            if(player instanceof HumanPlayer) {
             do {
-                player.rollDice();
-                if (isSuitableColumnExist(player.getDiceNumbers())) {
-                    while (!(isSelected(player.selectPlayerColumns()))) {
-                        reservedColumns.add(player.getPlayerColumnsNumers().get(0), player.getPlayerColumnsNumers().get(1));
+                    player.rollDice();
+
+                    if (isSuitableColumnExist(player.getDiceNumbers())) {
+                        while (!(isSelected(player.selectPlayerColumns()))) {
+                            reservedColumns.add(player.getPlayerColumnsNumbers().get(0), player.getPlayerColumnsNumbers().get(1));
+                        }
                     }
-                }
             }while (!(isSuitableColumnExist(player.getDiceNumbers())));
-        }
-
-
-        while( ! board.isGameOver( ) )
-        {
-            boolean isValidMove = false;
-            do
-            {
-                System.out.println();
-                System.out.println( currentPlayer + " It is your turn ..." );
-
-                move = currentPlayer.makeMove();
-
-                isValidMove = this.isValidMove( move );
-                if( ! isValidMove )
-                {
-                    System.out.println( currentPlayer + " That is NOT a VALID Move !!! " );
-                    board.display();
-                }
             }
-            while( ! isValidMove );
-
-            System.out.println( currentPlayer + " moved: " + move );
-            System.out.println();
-            board.processMove( move );
-            board.display();
-            currentPlayer = getNextPlayer();
+            else {
+                do {
+                    player.rollDice();
+                    if(!(isSelected(player.selectPlayerColumns()))) {
+                        reservedColumns.add(player.getPlayerColumnsNumbers().get(0), player.getPlayerColumnsNumbers().get(1));
+                    }
+                }while(!(isSelected(player.selectPlayerColumns())));
+            }
         }
+
+
+        for(int i = 0 ; i < roundNumber ; i++) {
+            for (Player player : players) {
+                System.out.println();
+                System.out.println(player + " It is your turn ...");
+
+                move = player.makeMove();
+
+                board.addStar(move.getColumns());
+
+                board.display();
+            }
+        }
+        announceWinner();
+
     }
+
 
 
     private boolean isSuitableColumnExist(ArrayList<Dice> diceNumbers){
@@ -130,5 +132,25 @@ public class Referee {
 
     public void announceWinner(){
 
+        int[] score = new int[players.size()];
+        int[] rank = new int[players.size()];
+        for(int i = 0 ; i < players.size() ; i++) {
+            score[i] = board.getScore(players.get(i).getPlayerColumnsNumbers());
+        }
+        for(int j = 0 ; j < players.size() ; j++) {
+            int max = score[0];
+            int temp = 0;
+            for (int i = 0; i < players.size(); i++) {
+                if (score[i] > max) {
+                    max = score[i];
+                    temp = i;
+                }
+            }
+            rank[j] = temp;
+            score[temp] = 0;
+        }
+        for(int i = 0 ; i < players.size() ; i++) {
+            System.out.println(i + ". Player is " + players.get(rank[i]).toString() );
+        }
     }
 }
