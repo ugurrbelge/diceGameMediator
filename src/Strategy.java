@@ -58,7 +58,7 @@ public class Strategy {
         }
 
         for (i=0;i<diceNumber.size();i++){
-            for (j=i+1 ; j<diceNumber.size();j++){
+            for (j=i+1 ; j<diceNumber.size()+1;j++){
                 if(bestChoice.contains(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()))){
                     selected.add(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()));
                     diceNumber.remove(i);
@@ -81,9 +81,10 @@ public class Strategy {
                 }
             }
         }
-
-        selected.add(Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString()));
-        selected.add(Integer.parseInt(diceNumber.get(2).toString())+Integer.parseInt(diceNumber.get(3).toString()));
+        //Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString())
+        selected.add(5);
+        selected.add(6);
+       // selected.add(Integer.parseInt(diceNumber.get(2).toString())+Integer.parseInt(diceNumber.get(3).toString()));
         return selected;
     }
 

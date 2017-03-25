@@ -11,7 +11,17 @@ public class ComputerPlayer implements Player{
     private Strategy strategy = new Strategy();
 
     public ComputerPlayer(String name){
+
         this.name = name;
+        createDices();
+    }
+
+    private void createDices(){
+
+        int index = 0;
+        for (index=0 ; index<4 ; index++){
+            playerDices.add(new Dice());
+        }
     }
 
     @Override
@@ -19,7 +29,8 @@ public class ComputerPlayer implements Player{
 
         ArrayList<Integer> strategyColumns = new ArrayList<Integer>();
         rollDice();
-
+        System.out.print("Your dices are :");
+        playerDices.forEach((dice) -> System.out.print(dice.getRandomInt() + " "));
 
         strategyColumns = strategy.generateStrategy(playerDices,playerColumnsNumbers);
 
@@ -28,7 +39,7 @@ public class ComputerPlayer implements Player{
         }else if(strategyColumns.size() == 1) {
             return new Move(strategyColumns.get(0));
         }else {
-            return new Move(0);
+            return new Move();
         }
     }
 
@@ -43,6 +54,9 @@ public class ComputerPlayer implements Player{
         ArrayList<Integer> selectedColumns = new ArrayList<Integer>();
 
         selectedColumns = strategy.selectColumns(playerDices);
+        playerColumnsNumbers = selectedColumns;
+        System.out.println(playerColumnsNumbers.toString());
+
 
         return selectedColumns;
     }

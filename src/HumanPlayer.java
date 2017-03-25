@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -8,7 +9,7 @@ public class HumanPlayer implements Player {
     private Scanner reader = new Scanner(System.in);
     private String name;
     private ArrayList<Dice> playerDices = new ArrayList<>();
-    private ArrayList<Integer> playerColumnsNumbers;
+    private ArrayList<Integer> playerColumnsNumbers = new ArrayList<Integer>();
 
 
 
@@ -47,7 +48,8 @@ public class HumanPlayer implements Player {
     }
 
     private void setPlayerColumnsNumbers(ArrayList<Integer> selectedColumns){
-        this.playerColumnsNumbers = selectedColumns ;
+        this.playerColumnsNumbers.add(selectedColumns.get(0));
+        this.playerColumnsNumbers.add(selectedColumns.get(1));
     }
 
     private void getPlayerColumnsNumbers(ArrayList<Integer> selectedColumns){
@@ -55,14 +57,18 @@ public class HumanPlayer implements Player {
     }
 
     private void setPlayerColumnsNumbers(Integer firstColumn,Integer secondColumn) {
-        if(playerColumnsNumbers.size() > 0) {
-            playerColumnsNumbers.set(0,firstColumn);
-            playerColumnsNumbers.set(1,secondColumn);
-        }
-        else {
+//        if(false) {
+//            playerColumnsNumbers.add(firstColumn);
+//            playerColumnsNumbers.add(secondColumn);
+//        }
+//        else {
             playerColumnsNumbers.add(firstColumn);
+            System.out.println("setcolum colum1 :" + firstColumn);
             playerColumnsNumbers.add(secondColumn);
-        }
+            System.out.println("setcolum colum2 :" + secondColumn);
+
+
+       // }
     }
 
     private void setName(String name) {
@@ -81,6 +87,7 @@ public class HumanPlayer implements Player {
 
         System.out.println("Select your first Column's 1. Dice :");
         firstColumnDiceNumber[0] = reader.nextInt();
+
         while(firstColumnDiceNumber[0] > 4 ) {
             System.out.println("Your decision invalid please select first column's first dice");
             firstColumnDiceNumber[0] = reader.nextInt();
@@ -88,6 +95,7 @@ public class HumanPlayer implements Player {
 
         System.out.println("Select your first Column's 2. Dice :");
         firstColumnDiceNumber[1] = reader.nextInt();
+
         while(firstColumnDiceNumber[1] > 4 || firstColumnDiceNumber[0] == firstColumnDiceNumber[1]) {
             System.out.println("Your desicion is invalid please select first column's second dice");
             firstColumnDiceNumber[1] = reader.nextInt();
@@ -95,19 +103,22 @@ public class HumanPlayer implements Player {
 
         System.out.println("Select your second Column's 1. Dice :");
         secondColumnDiceNumber[0] = reader.nextInt();
+
         while(secondColumnDiceNumber[0] > 4 || firstColumnDiceNumber[0] == secondColumnDiceNumber[0] || firstColumnDiceNumber[1] == secondColumnDiceNumber[0]) {
             System.out.println("Your desicion is invalid please select first column's first dice");
             secondColumnDiceNumber[0] = reader.nextInt();
         }
         System.out.println("Select your second Column's 2. Dice :");
         secondColumnDiceNumber[1] = reader.nextInt();
+
         while(secondColumnDiceNumber[1] > 4 || firstColumnDiceNumber[0] == secondColumnDiceNumber[1] || firstColumnDiceNumber[1] == secondColumnDiceNumber[1] || secondColumnDiceNumber[0] == secondColumnDiceNumber[1]) {
             System.out.println("Your desicion is invalid please select first column's second dice");
             secondColumnDiceNumber[0] = reader.nextInt();
         }
 
-        Integer column1 = playerDices.get(firstColumnDiceNumber[0]).getRandomInt() * playerDices.get(firstColumnDiceNumber[1]).getRandomInt();
-        Integer column2 = playerDices.get(secondColumnDiceNumber[0]).getRandomInt() * playerDices.get(secondColumnDiceNumber[1]).getRandomInt();
+
+        Integer column1 = playerDices.get(firstColumnDiceNumber[0]).getRandomInt()+playerDices.get(firstColumnDiceNumber[1]).getRandomInt();
+        Integer column2 = playerDices.get(secondColumnDiceNumber[0]).getRandomInt()+playerDices.get(secondColumnDiceNumber[1]).getRandomInt();
 
         setPlayerColumnsNumbers(column1,column2);
 
@@ -123,7 +134,7 @@ public class HumanPlayer implements Player {
         rollDice();
 
         System.out.println("Your dices are :");
-        playerDices.forEach((dice) -> System.out.print(dice.getRandomInt() + " "));
+        playerDices.forEach((dice) -> System.out.println(dice.getRandomInt() + " "));
 
         System.out.println("Take group of two dice and write them such that 1 push the enter 2 push and repeat");
 
@@ -154,8 +165,9 @@ public class HumanPlayer implements Player {
             secondColumnDiceNumber[0] = reader.nextInt();
         }
 
-        Integer column1 = playerDices.get(firstColumnDiceNumber[0]).getRandomInt() * playerDices.get(firstColumnDiceNumber[1]).getRandomInt();
-        Integer column2 = playerDices.get(secondColumnDiceNumber[0]).getRandomInt() * playerDices.get(secondColumnDiceNumber[1]).getRandomInt();
+        Integer column1 = playerDices.get(firstColumnDiceNumber[0]).getRandomInt() + playerDices.get(firstColumnDiceNumber[1]).getRandomInt();
+        Integer column2 = playerDices.get(secondColumnDiceNumber[0]).getRandomInt() + playerDices.get(secondColumnDiceNumber[1]).getRandomInt();
+
 
         if(playerColumnsNumbers.contains(column1)){
             if(playerColumnsNumbers.contains(column2) && column1 != column2){
@@ -168,7 +180,7 @@ public class HumanPlayer implements Player {
             return new Move(column2);
         }
         else {
-            return (new Move(0));
+            return (new Move());
         }
     }
 

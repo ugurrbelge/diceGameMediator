@@ -54,8 +54,9 @@ public class DiceGame {
                 for (index = 0; index < numberOfPlayer; index++) {
                     System.out.println("Player " + (index + 1) + " type(H/C) : ");
                     playerType = reader.next();
-                    if (!(playerType.equals("H")) || !(playerType.equals("C"))) {
-                        playerType = "C";   //if not valid input get type as computer
+                    while(!(playerType.equals("H")) && !(playerType.equals("C"))) {
+                        System.out.println("Invalid type!! Enter valid type : ");
+                        playerType = reader.next();
                     }
 
                     System.out.println("Player " + (index + 1) + " name : ");

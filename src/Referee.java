@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -5,11 +6,11 @@ import java.util.List;
 
 public class Referee {
     private Board board ;
-    private ArrayList<Integer> reservedColumns = new ArrayList<>();
+    private ArrayList<Integer> reservedColumns = new ArrayList<Integer>();
     private ArrayList<Player> players;
     private Player currentPlayer ;
     private int currentPlayerIndex = 0;
-    private int roundNumber = 5;
+    private int roundNumber = 2;
 
     public void conductGame(){
 
@@ -23,20 +24,27 @@ public class Referee {
                     player.rollDice();
 
                     if (isSuitableColumnExist(player.getDiceNumbers())) {
-                        while (!(isSelected(player.selectPlayerColumns()))) {
-                            reservedColumns.add(player.getPlayerColumnsNumbers().get(0), player.getPlayerColumnsNumbers().get(1));
+                        while (isSelected(player.selectPlayerColumns())) {
+
                         }
+                        reservedColumns.add(player.getPlayerColumnsNumbers().get(0));
+                        reservedColumns.add(player.getPlayerColumnsNumbers().get(1));
                     }
             }while (!(isSuitableColumnExist(player.getDiceNumbers())));
             }
             else {
                 do {
                     player.rollDice();
-                    if(!(isSelected(player.selectPlayerColumns()))) {
-                        reservedColumns.add(player.getPlayerColumnsNumbers().get(0), player.getPlayerColumnsNumbers().get(1));
+                    if(isSelected(player.selectPlayerColumns())) {
+
                     }
+                    reservedColumns.add(player.getPlayerColumnsNumbers().get(0));
+                    reservedColumns.add(player.getPlayerColumnsNumbers().get(1));
+                    System.out.println(reservedColumns);
                 }while(!(isSelected(player.selectPlayerColumns())));
             }
+            System.out.println("next player");
+            System.out.println(reservedColumns);
         }
 
 
@@ -52,7 +60,7 @@ public class Referee {
                 board.display();
             }
         }
-        announceWinner();
+
 
     }
 
@@ -88,7 +96,7 @@ public class Referee {
 
     private boolean isSelected(ArrayList<Integer> columns){
 
-        if(reservedColumns.contains(columns)){
+        if(reservedColumns.contains(columns.get(0)) && reservedColumns.contains(columns.get(1))){
             return true;
         }else {
             return false;
@@ -127,7 +135,7 @@ public class Referee {
                 players.add(new ComputerPlayer(name));
             }
         });
-        currentPlayer = players.get(0);
+
     }
 
     public void announceWinner(){

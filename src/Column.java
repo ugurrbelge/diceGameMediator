@@ -13,4 +13,7 @@ public class Column {
             System.out.print("*");
         }
     }
+    public int getStarNumber(){
+        return starNumber;
+    }
 }

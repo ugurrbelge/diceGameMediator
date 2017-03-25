@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -13,10 +14,12 @@ public class Dice {
     }
 
     public void setRandomInt(){
+
         this.randomInt = randomGenerator();
     }
 
     private int randomGenerator(){
+
         Random generator = new Random();
         return generator.nextInt(6)+1;
 
