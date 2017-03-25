@@ -43,7 +43,7 @@ public class Strategy {
         List combinasyon = new ArrayList<Integer>();
         List bestChoice  = new ArrayList<Integer>();
         List secondChoice  = new ArrayList<Integer>();
-
+        List badChoice  = new ArrayList<Integer>();
         ArrayList<Integer> selected= new ArrayList<Integer>();
         bestChoice.add(6);
         bestChoice.add(7);
@@ -52,17 +52,27 @@ public class Strategy {
         secondChoice.add(5);
         secondChoice.add(9);
         secondChoice.add(10);
+        badChoice.add(2);
+        badChoice.add(3);
+        badChoice.add(11);
+        badChoice.add(12);
+
         int i,j;
         for (Dice dice : diceNumbers){
             diceNumber.add(dice.getRandomInt());
         }
 
         for (i=0;i<diceNumber.size();i++){
-            for (j=i+1 ; j<diceNumber.size()+1;j++){
+            for (j=i+1 ; j<diceNumber.size();j++){
                 if(bestChoice.contains(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()))){
                     selected.add(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()));
-                    diceNumber.remove(i);
-                    diceNumber.remove(j);
+                    if(i < j) {
+                        diceNumber.remove(j);
+                        diceNumber.remove(i);
+                    }else if(j < i) {
+                        diceNumber.remove(i);
+                        diceNumber.remove(j);
+                    }
                     System.out.print("");
                     selected.add(Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString()));
                     return selected;
@@ -74,16 +84,36 @@ public class Strategy {
             for (j=i+1 ; j<diceNumber.size();j++){
                 if(secondChoice.contains(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()))){
                     selected.add(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()));
-                    diceNumber.remove(i);
-                    diceNumber.remove(j);
+                    if(i < j) {
+                        diceNumber.remove(j);
+                        diceNumber.remove(i);
+                    }else if(j < i) {
+                        diceNumber.remove(i);
+                        diceNumber.remove(j);
+                    }
+                    selected.add(Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString()));
+                    return selected;
+                }
+            }
+        }
+
+        for (i=0;i<diceNumber.size();i++){
+            for (j=i+1 ; j<diceNumber.size();j++){
+                if(badChoice.contains(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()))){
+                    selected.add(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()));
+                    if(i < j) {
+                        diceNumber.remove(j);
+                        diceNumber.remove(i);
+                    }else if(j < i) {
+                        diceNumber.remove(i);
+                        diceNumber.remove(j);
+                    }
                     selected.add(Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString()));
                     return selected;
                 }
             }
         }
         //Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString())
-        selected.add(5);
-        selected.add(6);
        // selected.add(Integer.parseInt(diceNumber.get(2).toString())+Integer.parseInt(diceNumber.get(3).toString()));
         return selected;
     }

@@ -13,10 +13,16 @@ public class Board {
         }
     }
     public void display(){
+        System.out.println();
         for(int i = 0 ; i < columnStars.length ; i++) {
-            System.out.print(i + " | " );
-            columnStars[i].display();
-            System.out.println();
+            if(i != 0 && i !=1 ) {
+                if(i < 10) {
+                    System.out.print(" ");
+                }
+                System.out.print(i + " | ");
+                columnStars[i].display();
+                System.out.println();
+            }
         }
     }
 
@@ -26,7 +32,8 @@ public class Board {
     }
 
     public void addStar(ArrayList<Integer> columns) {
-        if (columns == null){System.out.println("Not macth column!");
+        if (columns == null){
+            System.out.println("Not macth column!");
         }else{
             for(Integer integer : columns) {
                 columnStars[integer].increaseStar();

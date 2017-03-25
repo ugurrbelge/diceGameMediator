@@ -20,28 +20,29 @@ public class Referee {
         //all player select columns
         for (Player player : players){
             if(player instanceof HumanPlayer) {
-            do {
+                do {
                     player.rollDice();
 
                     if (isSuitableColumnExist(player.getDiceNumbers())) {
                         while (isSelected(player.selectPlayerColumns())) {
+                            System.out.println("Selected Column is Invalid...Please try again");
 
                         }
                         reservedColumns.add(player.getPlayerColumnsNumbers().get(0));
                         reservedColumns.add(player.getPlayerColumnsNumbers().get(1));
+
+                        System.out.print("Selectem Columns : ");
+                        System.out.println(player.getPlayerColumnsNumbers().get(0) + "," + player.getPlayerColumnsNumbers().get(1));
                     }
-            }while (!(isSuitableColumnExist(player.getDiceNumbers())));
+                }while (!(isSuitableColumnExist(player.getDiceNumbers())));
             }
             else {
                 do {
                     player.rollDice();
-                    if(isSelected(player.selectPlayerColumns())) {
-
-                    }
-                    reservedColumns.add(player.getPlayerColumnsNumbers().get(0));
-                    reservedColumns.add(player.getPlayerColumnsNumbers().get(1));
-                    System.out.println(reservedColumns);
-                }while(!(isSelected(player.selectPlayerColumns())));
+                }while((isSelected(player.selectPlayerColumns())));
+                reservedColumns.add(player.getPlayerColumnsNumbers().get(0));
+                reservedColumns.add(player.getPlayerColumnsNumbers().get(1));
+                System.out.println("Reserved Columns : " + reservedColumns);
             }
             System.out.println("next player");
             System.out.println(reservedColumns);
@@ -96,20 +97,12 @@ public class Referee {
 
     private boolean isSelected(ArrayList<Integer> columns){
 
-        if(reservedColumns.contains(columns.get(0)) && reservedColumns.contains(columns.get(1))){
+        if(reservedColumns.contains(columns.get(0)) || reservedColumns.contains(columns.get(1)) || columns.get(0) == columns.get(1) ){
             return true;
         }else {
             return false;
         }
 
-    }
-
-
-
-    public boolean isValidMove( Move move )
-    {
-
-        return true;
     }
 
     private Player getNextPlayer()

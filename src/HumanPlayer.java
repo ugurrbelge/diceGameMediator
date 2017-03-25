@@ -57,18 +57,14 @@ public class HumanPlayer implements Player {
     }
 
     private void setPlayerColumnsNumbers(Integer firstColumn,Integer secondColumn) {
-//        if(false) {
-//            playerColumnsNumbers.add(firstColumn);
-//            playerColumnsNumbers.add(secondColumn);
-//        }
-//        else {
+        if(!playerColumnsNumbers.isEmpty()) {
+            playerColumnsNumbers.set(0,firstColumn);
+            playerColumnsNumbers.set(1,secondColumn);
+        }
+        else {
             playerColumnsNumbers.add(firstColumn);
-            System.out.println("setcolum colum1 :" + firstColumn);
             playerColumnsNumbers.add(secondColumn);
-            System.out.println("setcolum colum2 :" + secondColumn);
-
-
-       // }
+        }
     }
 
     private void setName(String name) {

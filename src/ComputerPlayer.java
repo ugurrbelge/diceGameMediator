@@ -46,9 +46,11 @@ public class ComputerPlayer implements Player{
     public ArrayList<Dice> getDiceNumbers(){
         return playerDices;
     }
+
     public ArrayList<Integer> getPlayerColumnsNumbers(){
         return playerColumnsNumbers;
     }
+
     public ArrayList<Integer> selectPlayerColumns(){
 
         ArrayList<Integer> selectedColumns = new ArrayList<Integer>();
