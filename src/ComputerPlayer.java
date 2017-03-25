@@ -5,20 +5,24 @@ import java.util.ArrayList;
  */
 public class ComputerPlayer implements Player{
 
-    private ArrayList<Integer> playerColumnsNumbers;
+    private ArrayList<Integer> playerRowsNumbers;
     private ArrayList<Dice> playerDices = new ArrayList<>();
     private String name;
     private Strategy strategy = new Strategy();
+    private ArrayList<Integer> strategyRows = new ArrayList<>();
+    private ArrayList<Integer> selectedRows = new ArrayList<Integer>();
 
     public ComputerPlayer(String name){
-
-        this.name = name;
-        createDices();
+        try {
+            this.name = name;
+            createDices();
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     private void createDices(){
-
-        int index = 0;
+        int index ;
         for (index=0 ; index<4 ; index++){
             playerDices.add(new Dice());
         }
@@ -27,17 +31,16 @@ public class ComputerPlayer implements Player{
     @Override
     public Move makeMove() {
 
-        ArrayList<Integer> strategyColumns = new ArrayList<Integer>();
         rollDice();
         System.out.print("Your dices are :");
         playerDices.forEach((dice) -> System.out.print(dice.getRandomInt() + " "));
+        System.out.println();
+        strategyRows = strategy.generateStrategy(playerDices,playerRowsNumbers);
 
-        strategyColumns = strategy.generateStrategy(playerDices,playerColumnsNumbers);
-
-        if(strategyColumns.size() == 2) {
-            return new Move(strategyColumns.get(0),strategyColumns.get(1));
-        }else if(strategyColumns.size() == 1) {
-            return new Move(strategyColumns.get(0));
+        if(strategyRows.size() == 2) {
+            return new Move(strategyRows.get(0),strategyRows.get(1));
+        }else if(strategyRows.size() == 1) {
+            return new Move(strategyRows.get(0));
         }else {
             return new Move();
         }
@@ -47,21 +50,16 @@ public class ComputerPlayer implements Player{
         return playerDices;
     }
 
-    public ArrayList<Integer> getPlayerColumnsNumbers(){
-        return playerColumnsNumbers;
+    public ArrayList<Integer> getPlayerRowsNumbers(){
+        return playerRowsNumbers;
     }
 
-    public ArrayList<Integer> selectPlayerColumns(){
-
-        ArrayList<Integer> selectedColumns = new ArrayList<Integer>();
-
-        selectedColumns = strategy.selectColumns(playerDices);
-        playerColumnsNumbers = selectedColumns;
-        System.out.println(playerColumnsNumbers.toString());
-
-
-        return selectedColumns;
+    public ArrayList<Integer> selectPlayerRows(){
+        selectedRows = strategy.selectRows(playerDices);
+        playerRowsNumbers = selectedRows;
+        return selectedRows;
     }
+
     public void rollDice(){
         for(Dice dice : playerDices){
             dice.setRandomInt();

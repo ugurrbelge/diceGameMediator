@@ -6,12 +6,10 @@ import java.util.List;
  */
 public class Strategy {
 
-
-    public ArrayList<Integer> generateStrategy(ArrayList<Dice> dices, ArrayList<Integer> computerColumns) {
-
+    public ArrayList<Integer> generateStrategy(ArrayList<Dice> dices, ArrayList<Integer> computerRows) {
 
         List diceNumber = new ArrayList<Integer>();
-        List combinasyon = new ArrayList<Integer>();
+        List combination = new ArrayList<Integer>();
         int i,j;
         for (Dice dice : dices){
             diceNumber.add(dice.getRandomInt());
@@ -19,32 +17,34 @@ public class Strategy {
 
         for (i=0;i<diceNumber.size();i++) {
             for (j = i + 1; j < diceNumber.size(); j++) {
-                combinasyon.add(Integer.parseInt(diceNumber.get(i).toString()) + Integer.parseInt(diceNumber.get(j).toString()));
+                combination.add(Integer.parseInt(diceNumber.get(i).toString()) + Integer.parseInt(diceNumber.get(j).toString()));
             }
         }
 
-        if(combinasyon.contains(computerColumns.get(0)) && combinasyon.contains(computerColumns.get(1))) {
-            return computerColumns;
-        }else if (combinasyon.contains(computerColumns.get(0))) {
-            ArrayList<Integer> column = new ArrayList<Integer>();
-            column.add(computerColumns.get(0));
-            return column;
-        }else if (combinasyon.contains(computerColumns.get(1))) {
-            ArrayList<Integer> column = new ArrayList<Integer>();
-            column.add(computerColumns.get(1));
-            return column;
+        ArrayList<Integer> row = new ArrayList<Integer>();
+        if(((combination.get(0) == computerRows.get(0) && combination.get(5) == computerRows.get(1)) || (combination.get(0) == computerRows.get(0) && combination.get(5) == computerRows.get(1)))
+                || ((combination.get(1) == computerRows.get(0) && combination.get(4) == computerRows.get(1)) || (combination.get(1) == computerRows.get(0) && combination.get(4) == computerRows.get(1)))
+                || ((combination.get(2) == computerRows.get(0) && combination.get(3) == computerRows.get(1)) || (combination.get(2) == computerRows.get(0) && combination.get(3) == computerRows.get(1)))) {
+            return computerRows;
+        }else if (combination.contains(computerRows.get(0))) {
+            row.add(computerRows.get(0));
+            return row;
+        }else if (combination.contains(computerRows.get(1))) {
+            row.add(computerRows.get(1));
+            return row;
         }
+
         return new ArrayList<Integer>();
+
     }
 
-    public ArrayList<Integer> selectColumns(ArrayList<Dice> diceNumbers) {
-
+    public ArrayList<Integer> selectRows(ArrayList<Dice> diceNumbers) {
+        int index,secondIndex;
         List diceNumber = new ArrayList<Integer>();
-        List combinasyon = new ArrayList<Integer>();
         List bestChoice  = new ArrayList<Integer>();
         List secondChoice  = new ArrayList<Integer>();
         List badChoice  = new ArrayList<Integer>();
-        ArrayList<Integer> selected= new ArrayList<Integer>();
+        ArrayList<Integer> selected= new ArrayList<>();
         bestChoice.add(6);
         bestChoice.add(7);
         bestChoice.add(8);
@@ -57,21 +57,21 @@ public class Strategy {
         badChoice.add(11);
         badChoice.add(12);
 
-        int i,j;
+
         for (Dice dice : diceNumbers){
             diceNumber.add(dice.getRandomInt());
         }
 
-        for (i=0;i<diceNumber.size();i++){
-            for (j=i+1 ; j<diceNumber.size();j++){
-                if(bestChoice.contains(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()))){
-                    selected.add(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()));
-                    if(i < j) {
-                        diceNumber.remove(j);
-                        diceNumber.remove(i);
-                    }else if(j < i) {
-                        diceNumber.remove(i);
-                        diceNumber.remove(j);
+        for (index=0;index<diceNumber.size();index++){
+            for (secondIndex=index+1 ; secondIndex<diceNumber.size();secondIndex++){
+                if(bestChoice.contains(Integer.parseInt(diceNumber.get(index).toString())+Integer.parseInt(diceNumber.get(secondIndex).toString()))){
+                    selected.add(Integer.parseInt(diceNumber.get(index).toString())+Integer.parseInt(diceNumber.get(secondIndex).toString()));
+                    if(index < secondIndex) {
+                        diceNumber.remove(secondIndex);
+                        diceNumber.remove(index);
+                    }else if(secondIndex < index) {
+                        diceNumber.remove(index);
+                        diceNumber.remove(secondIndex);
                     }
                     System.out.print("");
                     selected.add(Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString()));
@@ -80,16 +80,16 @@ public class Strategy {
             }
         }
 
-        for (i=0;i<diceNumber.size();i++){
-            for (j=i+1 ; j<diceNumber.size();j++){
-                if(secondChoice.contains(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()))){
-                    selected.add(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()));
-                    if(i < j) {
-                        diceNumber.remove(j);
-                        diceNumber.remove(i);
-                    }else if(j < i) {
-                        diceNumber.remove(i);
-                        diceNumber.remove(j);
+        for (index=0;index<diceNumber.size();index++){
+            for (secondIndex=index+1 ; secondIndex<diceNumber.size();secondIndex++){
+                if(secondChoice.contains(Integer.parseInt(diceNumber.get(index).toString())+Integer.parseInt(diceNumber.get(secondIndex).toString()))){
+                    selected.add(Integer.parseInt(diceNumber.get(index).toString())+Integer.parseInt(diceNumber.get(secondIndex).toString()));
+                    if(index < secondIndex) {
+                        diceNumber.remove(secondIndex);
+                        diceNumber.remove(index);
+                    }else if(secondIndex < index) {
+                        diceNumber.remove(index);
+                        diceNumber.remove(secondIndex);
                     }
                     selected.add(Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString()));
                     return selected;
@@ -97,25 +97,23 @@ public class Strategy {
             }
         }
 
-        for (i=0;i<diceNumber.size();i++){
-            for (j=i+1 ; j<diceNumber.size();j++){
-                if(badChoice.contains(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()))){
-                    selected.add(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()));
-                    if(i < j) {
-                        diceNumber.remove(j);
-                        diceNumber.remove(i);
-                    }else if(j < i) {
-                        diceNumber.remove(i);
-                        diceNumber.remove(j);
+        for (index=0;index<diceNumber.size();index++){
+            for (secondIndex=index+1 ; secondIndex<diceNumber.size();secondIndex++){
+                if(badChoice.contains(Integer.parseInt(diceNumber.get(index).toString())+Integer.parseInt(diceNumber.get(secondIndex).toString()))){
+                    selected.add(Integer.parseInt(diceNumber.get(index).toString())+Integer.parseInt(diceNumber.get(secondIndex).toString()));
+                    if(index < secondIndex) {
+                        diceNumber.remove(secondIndex);
+                        diceNumber.remove(index);
+                    }else if(secondIndex < index) {
+                        diceNumber.remove(index);
+                        diceNumber.remove(secondIndex);
                     }
                     selected.add(Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString()));
                     return selected;
                 }
             }
         }
-        //Integer.parseInt(diceNumber.get(0).toString())+Integer.parseInt(diceNumber.get(1).toString())
-       // selected.add(Integer.parseInt(diceNumber.get(2).toString())+Integer.parseInt(diceNumber.get(3).toString()));
+
         return selected;
     }
-
 }

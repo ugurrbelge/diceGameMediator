@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -6,121 +5,115 @@ import java.util.List;
 
 public class Referee {
     private Board board ;
-    private ArrayList<Integer> reservedColumns = new ArrayList<Integer>();
+    private ArrayList<Integer> reservedRows = new ArrayList<>();
     private ArrayList<Player> players;
-    private Player currentPlayer ;
-    private int currentPlayerIndex = 0;
-    private int roundNumber = 2;
+
 
     public void conductGame(){
-
-        board.display();
-        Move move = null;
-
-        //all player select columns
+        Move move;
+        int roundNumber = 1;
         for (Player player : players){
             if(player instanceof HumanPlayer) {
+
                 do {
                     player.rollDice();
 
-                    if (isSuitableColumnExist(player.getDiceNumbers())) {
-                        while (isSelected(player.selectPlayerColumns())) {
-                            System.out.println("Selected Column is Invalid...Please try again");
+                    if (isSuitableRowExist(player.getDiceNumbers())) {
+                        System.out.println("Reserved Rows : " + reservedRows);
+                        System.out.println();
 
+                        while (isSelected(player.selectPlayerRows())) {
+                            System.out.println("Selected Row is Invalid...Please try again");
                         }
-                        reservedColumns.add(player.getPlayerColumnsNumbers().get(0));
-                        reservedColumns.add(player.getPlayerColumnsNumbers().get(1));
 
-                        System.out.print("Selectem Columns : ");
-                        System.out.println(player.getPlayerColumnsNumbers().get(0) + "," + player.getPlayerColumnsNumbers().get(1));
+                        System.out.println();
+                        System.out.print(player.toString() + " select :");
+                        System.out.println(player.getPlayerRowsNumbers().get(0) + "," + player.getPlayerRowsNumbers().get(1));
                     }
-                }while (!(isSuitableColumnExist(player.getDiceNumbers())));
+                }while (!(isSuitableRowExist(player.getDiceNumbers())));
+
+                reservedRows.add(player.getPlayerRowsNumbers().get(0));
+                reservedRows.add(player.getPlayerRowsNumbers().get(1));
             }
             else {
+                System.out.println("Reserved rows : " + reservedRows);
+
                 do {
                     player.rollDice();
-                }while((isSelected(player.selectPlayerColumns())));
-                reservedColumns.add(player.getPlayerColumnsNumbers().get(0));
-                reservedColumns.add(player.getPlayerColumnsNumbers().get(1));
-                System.out.println("Reserved Columns : " + reservedColumns);
-            }
-            System.out.println("next player");
-            System.out.println(reservedColumns);
-        }
+                }while((isSelected(player.selectPlayerRows())));
 
+                reservedRows.add(player.getPlayerRowsNumbers().get(0));
+                reservedRows.add(player.getPlayerRowsNumbers().get(1));
+
+                System.out.print(player.toString() + " select :");
+                System.out.print(player.getPlayerRowsNumbers().get(0) + "," + player.getPlayerRowsNumbers().get(1));
+                System.out.print(" rows.");
+                System.out.println();
+            }
+            System.out.println();
+            System.out.println("next player");
+            System.out.println();
+        }
 
         for(int i = 0 ; i < roundNumber ; i++) {
             for (Player player : players) {
+                System.out.println(player + ", it is your turn !");
                 System.out.println();
-                System.out.println(player + " It is your turn ...");
+                System.out.print("Your rows are : ");
+                System.out.print(player.getPlayerRowsNumbers().get(0) + "," + player.getPlayerRowsNumbers().get(1));
+                System.out.println();
 
                 move = player.makeMove();
-
-                board.addStar(move.getColumns());
-
+                board.addStar(move.getRows());
+                System.out.println();
                 board.display();
+                System.out.println();
             }
         }
-
-
+        announceWinner();
     }
 
-
-
-    private boolean isSuitableColumnExist(ArrayList<Dice> diceNumbers){
-
+    private boolean isSuitableRowExist(ArrayList<Dice> diceNumbers){
 
         List diceNumber = new ArrayList<Integer>();
-        List combinasyon = new ArrayList<Integer>();
+        List combination = new ArrayList<Integer>();
         int i,j;
+
         for (Dice dice : diceNumbers){
             diceNumber.add(dice.getRandomInt());
         }
 
         for (i=0;i<diceNumber.size();i++){
             for (j=i+1 ; j<diceNumber.size();j++){
-                    combinasyon.add(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()));
+                    combination.add(Integer.parseInt(diceNumber.get(i).toString())+Integer.parseInt(diceNumber.get(j).toString()));
             }
         }
 
 
-
-        if (reservedColumns.contains(combinasyon)){
+        if (reservedRows.contains(combination.get(0)) || reservedRows.contains(combination.get(5)) || combination.get(0).equals(combination.get(5))
+                && reservedRows.contains(combination.get(1)) || reservedRows.contains(combination.get(4)) || combination.get(1).equals(combination.get(4))
+                && reservedRows.contains(combination.get(2)) || reservedRows.contains(combination.get(3)) || combination.get(2).equals(combination.get(3))){
             return false;
         }else {
             return true;
         }
 
-
-
     }
 
-    private boolean isSelected(ArrayList<Integer> columns){
+    private boolean isSelected(ArrayList<Integer> rows){
 
-        if(reservedColumns.contains(columns.get(0)) || reservedColumns.contains(columns.get(1)) || columns.get(0) == columns.get(1) ){
+        if(reservedRows.contains(rows.get(0)) || reservedRows.contains(rows.get(1)) || rows.get(0).equals(rows.get(1))){
             return true;
         }else {
             return false;
         }
-
     }
 
-    private Player getNextPlayer()
-    {
-        currentPlayerIndex++;
-        if(currentPlayerIndex<players.size()) {
-            return players.get(currentPlayerIndex);
-        }else{
-            currentPlayerIndex = 0;
-            return players.get(currentPlayerIndex);
-        }
-    }
+    public void init( HashMap<String,String> gamePlayers){
 
-
-    public void init( HashMap<String,String> gamePlayers)
-    {
-        this.players = new ArrayList<Player>();
+        this.players = new ArrayList<>();
         this.board = new Board();
+
         gamePlayers.forEach((name,type) -> {
             if (type.equals("H")){
                 players.add(new HumanPlayer(name));
@@ -131,14 +124,17 @@ public class Referee {
 
     }
 
-    public void announceWinner(){
+    private void announceWinner(){
 
         int[] score = new int[players.size()];
         int[] rank = new int[players.size()];
-        for(int i = 0 ; i < players.size() ; i++) {
-            score[i] = board.getScore(players.get(i).getPlayerColumnsNumbers());
+        int index;
+        int secondIndex;
+        for(index = 0 ; index < players.size() ; index++) {
+            score[index] = board.getScore(players.get(index).getPlayerRowsNumbers());
         }
-        for(int j = 0 ; j < players.size() ; j++) {
+
+        for(secondIndex = 0 ; secondIndex < players.size() ; secondIndex++) {
             int max = score[0];
             int temp = 0;
             for (int i = 0; i < players.size(); i++) {
@@ -147,11 +143,12 @@ public class Referee {
                     temp = i;
                 }
             }
-            rank[j] = temp;
-            score[temp] = 0;
+
+            rank[secondIndex] = temp;
+            score[temp] = -1;
         }
         for(int i = 0 ; i < players.size() ; i++) {
-            System.out.println(i + ". Player is " + players.get(rank[i]).toString() );
+            System.out.println(i+1 + ". Player is " + players.get(rank[i]).toString() );
         }
     }
 }

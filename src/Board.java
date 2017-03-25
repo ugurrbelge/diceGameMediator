@@ -1,55 +1,43 @@
 import java.util.ArrayList;
 
-/**
- * Created by ugurbelge on 3/23/17.
- */
+
 public class Board {
 
-    private Column[] columnStars = new Column[13];
-
+    private Row[] rowStars = new Row[13];
+    private int index;
     public Board() {
-        for(int i = 0 ; i < columnStars.length ; i++) {
-            columnStars[i] = new Column();
+        for(index = 0 ; index < rowStars.length ; index++) {
+            rowStars[index] = new Row();
         }
     }
+
     public void display(){
-        System.out.println();
-        for(int i = 0 ; i < columnStars.length ; i++) {
-            if(i != 0 && i !=1 ) {
-                if(i < 10) {
+        for(index = 1 ; index < rowStars.length ; index++) {
+                if(index < 10) {
                     System.out.print(" ");
                 }
-                System.out.print(i + " | ");
-                columnStars[i].display();
+                System.out.print(index + " | ");
+                rowStars[index].display();
                 System.out.println();
-            }
         }
     }
 
-    public boolean isGameOver(){
-
-        return true;
-    }
-
-    public void addStar(ArrayList<Integer> columns) {
-        if (columns == null){
-            System.out.println("Not macth column!");
+    public void addStar(ArrayList<Integer> rows) {
+        if (rows == null){
+            System.out.println("Not match row!");
         }else{
-            for(Integer integer : columns) {
-                columnStars[integer].increaseStar();
+            for(Integer integer : rows) {
+                rowStars[integer].increaseStar();
             }
         }
-
-
    }
 
-    public int getScore(ArrayList<Integer> columns) {
-        System.out.println("adaw :"+columns.toString());
+    public int getScore(ArrayList<Integer> rows) {
         int a;
-        if (columns.size()==1){
-            a = columnStars[columns.get(0)].getStarNumber();
-        }else if (columns.size()==2){
-             a = columnStars[columns.get(0)].getStarNumber()+columnStars[columns.get(1)].getStarNumber();
+        if (rows.size()==1){
+            a = rowStars[rows.get(0)].getStarNumber();
+        }else if (rows.size()==2){
+             a = rowStars[rows.get(0)].getStarNumber()+rowStars[rows.get(1)].getStarNumber();
         }else {
             return 0;
         }

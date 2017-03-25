@@ -4,33 +4,30 @@ import java.util.ArrayList;
  * Created by ugurbelge on 3/23/17.
  */
 public class Move {
-    private ArrayList<Integer> columns = new ArrayList<Integer>();
+    private ArrayList<Integer> rows = new ArrayList<>();
 
     public Move(){}
 
-    public Move(Integer column){
+    public Move(Integer row){
         try{
-            columns.add(column);
+            rows.add(row);
         }catch (Exception e){
-            System.out.println(e);
+            System.out.println(e.toString());
             System.out.println(1);
         }
     }
 
-    public Move(Integer column1, Integer column2){
+    public Move(Integer row1, Integer row2){
         try{
-            columns.add(column1);
-            columns.add(column2);
+            rows.add(row1);
+            rows.add(row2);
         }catch (Exception e){
-            System.out.println(e);
+            System.out.println(e.toString());
             System.out.println(2);
         }
     }
-    private void setColumns(ArrayList<Integer> columns){
-        this.columns = columns;
-    }
 
-    public ArrayList<Integer> getColumns(){
-        return columns;
+    public ArrayList<Integer> getRows(){
+        return rows;
     }
 }

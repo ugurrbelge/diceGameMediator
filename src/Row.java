@@ -1,7 +1,5 @@
-/**
- * Created by ugurbelge on 3/23/17.
- */
-public class Column {
+
+public class Row {
     private int starNumber = 0;
 
     public void increaseStar() {
