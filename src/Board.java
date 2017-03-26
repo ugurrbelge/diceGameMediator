@@ -14,7 +14,7 @@ public class Board {
 
     //To show the table
     public void display(){
-        for(index = 1 ; index < rowStars.length ; index++) {
+        for(index = 2 ; index < rowStars.length ; index++) {
                 if(index < 10) {
                     System.out.print(" ");          //To print properly
                 }
