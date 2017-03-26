@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 
-/**
- * Created by ugurbelge on 3/23/17.
- */
 public class ComputerPlayer implements Player{
 
     private ArrayList<Integer> playerRowsNumbers;       //rows of player

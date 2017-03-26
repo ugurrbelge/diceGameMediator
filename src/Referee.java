@@ -11,7 +11,7 @@ public class Referee {
 
     public void conductGame(){
         Move move;
-        int roundNumber = 1;
+        int roundNumber = 5;
         for (Player player : players){      //this loop for players to select rows
             if(player instanceof HumanPlayer) {
                 //if player type is human do following

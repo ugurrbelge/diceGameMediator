@@ -77,34 +77,34 @@ public class HumanPlayer implements Player {
 
         //select dice pairs with checking is already selected
         System.out.println("Select your first pair first dice :");
-        firstRowDiceNumber[0] = reader.nextInt();
+        firstRowDiceNumber[0] = reader.nextInt()-1;
 
         while(firstRowDiceNumber[0] > 4 ) {
             System.out.println("Your decision invalid please select first pair first dice");
-            firstRowDiceNumber[0] = reader.nextInt();
+            firstRowDiceNumber[0] = reader.nextInt()-1;
         }
 
         System.out.println("Select your first pair second dice :");
-        firstRowDiceNumber[1] = reader.nextInt();
+        firstRowDiceNumber[1] = reader.nextInt()-1;
 
         while(firstRowDiceNumber[1] > 4 || firstRowDiceNumber[0].equals(firstRowDiceNumber[1])) {
             System.out.println("Your decision is invalid please select first pair second dice");
-            firstRowDiceNumber[1] = reader.nextInt();
+            firstRowDiceNumber[1] = reader.nextInt()-1;
         }
 
         System.out.println("Select your second pair first dice :");
-        secondRowDiceNumber[0] = reader.nextInt();
+        secondRowDiceNumber[0] = reader.nextInt()-1;
 
         while(secondRowDiceNumber[0] > 4 || firstRowDiceNumber[0].equals(secondRowDiceNumber[0]) || firstRowDiceNumber[1].equals(secondRowDiceNumber[0])) {
             System.out.println("Your decision is invalid please select second pair first dice");
-            secondRowDiceNumber[0] = reader.nextInt();
+            secondRowDiceNumber[0] = reader.nextInt()-1;
         }
         System.out.println("Select your second pair second dice :");
-        secondRowDiceNumber[1] = reader.nextInt();
+        secondRowDiceNumber[1] = reader.nextInt()-1;
 
         while(secondRowDiceNumber[1] > 4 || firstRowDiceNumber[0].equals(secondRowDiceNumber[1]) || firstRowDiceNumber[1].equals(secondRowDiceNumber[1]) || secondRowDiceNumber[0].equals(secondRowDiceNumber[1])) {
             System.out.println("Your decision is invalid please select second pair second dice");
-            secondRowDiceNumber[0] = reader.nextInt();
+            secondRowDiceNumber[0] = reader.nextInt()-1;
         }
 
         Integer row1 = playerDices.get(firstRowDiceNumber[0]).getRandomInt()+playerDices.get(firstRowDiceNumber[1]).getRandomInt();
